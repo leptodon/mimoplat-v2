@@ -1,0 +1,2 @@
+rootProject.name='mimoplat'
+include ':app'
