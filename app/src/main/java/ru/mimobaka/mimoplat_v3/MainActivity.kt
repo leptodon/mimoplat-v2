@@ -1,31 +1,54 @@
 package ru.mimobaka.mimoplat_v3
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.ViewGroup
-import com.bluelinelabs.conductor.Conductor
-import com.bluelinelabs.conductor.Router
-import com.bluelinelabs.conductor.RouterTransaction
-import ru.mimobaka.mimoplat_v3.R
-import ru.mimobaka.mimoplat_v3.ui.map.MapView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.osmdroid.config.Configuration
+import org.osmdroid.views.overlay.TilesOverlay
+
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
 
-        val container: ViewGroup = findViewById(R.id.root)
-        router = Conductor.attachRouter(this, container, savedInstanceState)
+        val navController = findNavController(R.id.nav_host_fragment)
 
-        if (!router.hasRootController()) router.setRoot(RouterTransaction.with(MapView()))
-    }
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        val appBarConfiguration = AppBarConfiguration(setOf(
+            R.id.navigation_map, R.id.navigation_settings))
 
-    override fun onBackPressed() {
-        if (!router.handleBack()) {
-            super.onBackPressed();
-        }
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
+
+//        navView.setOnNavigationItemSelectedListener{
+//            when(it.itemId){
+//                R.id.navigation_add -> {
+//                    add_popup.visibility = View.VISIBLE
+//                    return@setOnNavigationItemSelectedListener true
+//                }
+//                else -> {
+//                    add_popup.visibility = View.INVISIBLE
+//                    return@setOnNavigationItemSelectedListener true
+//                }
+//            }
+//        }
+//        navView.setOnClickListener{
+//            Log.d("ID", it.id.toString())
+//            when (it.id) {
+//                R.id.add_btn -> {
+//                    add_popup.visibility = View.INVISIBLE
+//                    Log.d("ACTION", "PRESS ADD BUTTON")
+//                }
+//            }
+//        }
     }
 }

@@ -21,6 +21,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -35,18 +39,30 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
+    implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.navigation:navigation-fragment:2.2.1'
+    implementation 'androidx.navigation:navigation-ui:2.2.1'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    //UI
-    implementation 'com.google.android.material:material:1.1.0'
+    /**Coroutines */
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.2"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-alpha01"
 
-    //Counductor
-    implementation 'com.bluelinelabs:conductor:3.0.0-rc2'
-    implementation 'com.bluelinelabs:conductor-support:3.0.0-rc2'
-    implementation 'com.bluelinelabs:conductor-rxlifecycle2:3.0.0-rc1'
-    implementation 'com.bluelinelabs:conductor-autodispose:3.0.0-rc1'
-    implementation 'com.bluelinelabs:conductor-archlifecycle:3.0.0-rc2'
+    /** Osmadroid(map) */
+    implementation 'org.osmdroid:osmdroid-android:6.1.2'
+    implementation 'org.osmdroid:osmdroid-mapsforge:6.1.2'
+    implementation 'com.github.MKergall:osmbonuspack:6.6.0'
+
+    /** Retrofit */
+    implementation "com.squareup.retrofit2:retrofit:2.6.2"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.6.2"
+    implementation "com.squareup.retrofit2:converter-gson:2.6.2"
+    testImplementation "com.squareup.retrofit2:retrofit:2.6.2"
 }

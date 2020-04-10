@@ -1,8 +1,7 @@
 package ru.mimobaka.mimoplat_v3
 
 import org.junit.Test
-
-import org.junit.Assert.*
+import ru.mimobaka.mimoplat_v3.data.repository.NetworkRepository
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -10,8 +9,12 @@ import org.junit.Assert.*
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+    val repository: NetworkRepository = NetworkRepository()
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    suspend fun showResponse() {
+        val retrivedNetworkResponse = repository.getResponseNW("1111111555555")
+        retrivedNetworkResponse.points
+        print(retrivedNetworkResponse.points.toString())
     }
 }
