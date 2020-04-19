@@ -1,7 +1,7 @@
 package ru.mimobaka.mimoplat_v3
 
 import org.junit.Test
-import ru.mimobaka.mimoplat_v3.data.repository.NetworkRepository
+import ru.mimobaka.mimoplat_v3.data.network.repository.NWRepositoryImpl
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -9,11 +9,11 @@ import ru.mimobaka.mimoplat_v3.data.repository.NetworkRepository
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
-    val repository: NetworkRepository = NetworkRepository()
+    val repositoryImpl: NWRepositoryImpl = NWRepositoryImpl()
 
     @Test
     suspend fun showResponse() {
-        val retrivedNetworkResponse = repository.getResponseNW("1111111555555")
+        val retrivedNetworkResponse = repositoryImpl.getResponseNW("1111111555555")
         retrivedNetworkResponse.points
         print(retrivedNetworkResponse.points.toString())
     }
