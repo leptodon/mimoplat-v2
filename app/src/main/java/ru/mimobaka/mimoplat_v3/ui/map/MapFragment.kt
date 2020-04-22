@@ -45,7 +45,7 @@ class MapFragment : Fragment(), CoroutineScope by MainScope() {
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private var currentLocation: Location? = null
     private var icon: Bitmap? = null
-    private lateinit var pointsList: List<Point>
+    private var pointsList = ArrayList<Point>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,16 +71,26 @@ class MapFragment : Fragment(), CoroutineScope by MainScope() {
 //        icon = BitmapFactory.decodeResource(resources, R.drawable.point_24px)
 //        mLocationOverlay.setDirectionArrow(icon, icon)
 
-
-        observers()
+        mapViewModel.getResponse()
         initMap()
+        observers()
         return root
     }
 
-    fun observers() {
+    private fun observers() {
         mapViewModel.pointsList.observe(this, Observer {
-            pointsList = it
+            pointsList.addAll(it)
+            setMarkers()
         })
+    }
+    private fun setMarkers() {
+        var marker: Marker
+        for (p: Point in pointsList) {
+            marker = Marker(map)
+            marker.icon = getDrawable(requireContext(), R.drawable.point_icon)
+            marker.position = GeoPoint(p.lon, p.lat)
+            poiMarkers.add(marker)
+        }
     }
 
     @SuppressLint("MissingPermission")

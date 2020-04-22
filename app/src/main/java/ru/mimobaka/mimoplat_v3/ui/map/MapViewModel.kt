@@ -22,6 +22,7 @@ class MapViewModel(
         when (val result = networkResponse.getResponse("1111111555555")) {
             is Result.Success -> {
                 pointsList.postValue(result.data.points?.map { NetworkPointMapper.fromNetwork(it) })
+                Log.d("NETWORK", "SUCCESS")
             }
             is Result.Error -> {
                 val errMessage = result.message

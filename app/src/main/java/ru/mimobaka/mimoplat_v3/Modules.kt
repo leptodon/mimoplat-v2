@@ -13,6 +13,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.mimobaka.mimoplat_v3.dataSource.local.AppDatabase
 import ru.mimobaka.mimoplat_v3.dataSource.local.DatabaseRepositoryImpl
 import ru.mimobaka.mimoplat_v3.dataSource.network.api.ApiService
+import ru.mimobaka.mimoplat_v3.dataSource.network.repository.NetworkRepository
+import ru.mimobaka.mimoplat_v3.dataSource.network.repository.NetworkRepositoryImpl
 import ru.mimobaka.mimoplat_v3.ui.map.MapViewModel
 import ru.mimobaka.mimoplat_v3.useCases.local.DatabaseRepository
 import java.util.concurrent.TimeUnit
@@ -56,6 +58,9 @@ val networkModule = module {
     single { provideRetrofit() }
 
     single { provideApiService(get()) }
+
+    single<NetworkRepositoryImpl>()
+    factory<NetworkRepository> { get<NetworkRepositoryImpl>() }
 }
 
 val viewModelModule = module {
