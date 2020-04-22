@@ -83,6 +83,7 @@ class MapFragment : Fragment(), CoroutineScope by MainScope() {
             setMarkers()
         })
     }
+
     private fun setMarkers() {
         var marker: Marker
         for (p: Point in pointsList) {
@@ -128,15 +129,6 @@ class MapFragment : Fragment(), CoroutineScope by MainScope() {
         }
 
         mLocationOverlay.isDrawAccuracyEnabled = true
-
-
-        var marker: Marker
-        for (p: Point in pointsList) {
-            marker = Marker(map)
-            marker.icon = getDrawable(requireContext(), R.drawable.point_icon)
-            marker.position = GeoPoint(p.lon, p.lat)
-            poiMarkers.add(marker)
-        }
     }
 
     @SuppressLint("MissingPermission")
