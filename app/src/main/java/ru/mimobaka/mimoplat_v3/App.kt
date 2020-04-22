@@ -7,6 +7,8 @@ import org.koin.core.context.startKoin
 
 class App : Application() {
     companion object {
+        @SuppressLint("StaticFieldLeak")
+        @Volatile
         lateinit var context: Context
     }
 
