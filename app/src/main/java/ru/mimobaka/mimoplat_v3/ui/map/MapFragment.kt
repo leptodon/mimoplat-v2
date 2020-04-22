@@ -1,5 +1,6 @@
 package ru.mimobaka.mimoplat_v3.ui.map
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.location.Location
@@ -14,11 +15,11 @@ import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.XYTileSource
@@ -30,7 +31,7 @@ import org.osmdroid.views.overlay.ScaleBarOverlay
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import ru.mimobaka.mimoplat_v3.App
 import ru.mimobaka.mimoplat_v3.R
-import ru.mimobaka.mimoplat_v3.data.network.model.PointNW
+import ru.mimobaka.mimoplat_v3.model.Point
 
 
 class MapFragment : Fragment(), CoroutineScope by MainScope() {
@@ -39,11 +40,12 @@ class MapFragment : Fragment(), CoroutineScope by MainScope() {
     private lateinit var mLocationOverlay: MyLocationNewOverlay
     private lateinit var poiMarkers: RadiusMarkerClusterer
     private lateinit var clusterIconD: Drawable
-    private lateinit var mapViewModel: MapViewModel
+    private val mapViewModel by viewModel<MapViewModel>()
     private lateinit var scaleBar: ScaleBarOverlay
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private var currentLocation: Location? = null
     private var icon: Bitmap? = null
+    private lateinit var pointsList: List<Point>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +54,6 @@ class MapFragment : Fragment(), CoroutineScope by MainScope() {
     ): View? {
         Configuration.getInstance()
             .load(context, PreferenceManager.getDefaultSharedPreferences(context));
-        mapViewModel = ViewModelProvider.NewInstanceFactory().create(MapViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_map, container, false)
 
         map = root.findViewById(R.id.map)
@@ -70,10 +71,19 @@ class MapFragment : Fragment(), CoroutineScope by MainScope() {
 //        icon = BitmapFactory.decodeResource(resources, R.drawable.point_24px)
 //        mLocationOverlay.setDirectionArrow(icon, icon)
 
+
+        observers()
         initMap()
         return root
     }
 
+    fun observers() {
+        mapViewModel.pointsList.observe(this, Observer {
+            pointsList = it
+        })
+    }
+
+    @SuppressLint("MissingPermission")
     private fun initMap() = launch {
 
         map.setTileSource(
@@ -109,17 +119,17 @@ class MapFragment : Fragment(), CoroutineScope by MainScope() {
 
         mLocationOverlay.isDrawAccuracyEnabled = true
 
-        mapViewModel.getResponse().observe(viewLifecycleOwner, Observer {
-            var marker: Marker
-            for (p: PointNW in it.points!!) {
-                marker = Marker(map)
-                marker.icon = getDrawable(context!!, R.drawable.point_icon)
-                marker.position = GeoPoint(p.lon!!, p.lat!!)
-                poiMarkers.add(marker)
-            }
-        })
+
+        var marker: Marker
+        for (p: Point in pointsList) {
+            marker = Marker(map)
+            marker.icon = getDrawable(requireContext(), R.drawable.point_icon)
+            marker.position = GeoPoint(p.lon, p.lat)
+            poiMarkers.add(marker)
+        }
     }
 
+    @SuppressLint("MissingPermission")
     private fun requestNewLocationData() {
         var mLocationRequest = LocationRequest()
         mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY

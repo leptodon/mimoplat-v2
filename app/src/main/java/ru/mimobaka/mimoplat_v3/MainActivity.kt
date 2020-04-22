@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
 //                }
 //            }
 //        }
+//
 //        navView.setOnClickListener{
 //            Log.d("ID", it.id.toString())
 //            when (it.id) {
