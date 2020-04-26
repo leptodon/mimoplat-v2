@@ -68,6 +68,7 @@ class MapFragment : Fragment(), CoroutineScope by MainScope() {
         map.overlays.add(scaleBar)
 
         mLocationOverlay.enableMyLocation()
+
 //        icon = BitmapFactory.decodeResource(resources, R.drawable.point_24px)
 //        mLocationOverlay.setDirectionArrow(icon, icon)
 

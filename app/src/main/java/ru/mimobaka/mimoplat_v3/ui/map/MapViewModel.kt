@@ -18,7 +18,6 @@ class MapViewModel(
     val pointsList = SingleLiveData<List<Point>>()
 
     fun getResponse() = viewModelScope.launch {
-
         when (val result = networkResponse.getResponse("1111111555555")) {
             is Result.Success -> {
                 pointsList.postValue(result.data.points?.map { NetworkPointMapper.fromNetwork(it) })
@@ -30,4 +29,7 @@ class MapViewModel(
             }
         }
     }
+
+    
+
 }
